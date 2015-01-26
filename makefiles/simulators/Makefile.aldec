@@ -1,3 +1,4 @@
+# -*- mode: makefile -*-
 ###############################################################################
 # Copyright (c) 2013 Potential Ventures Ltd
 # Copyright (c) 2013 SolarFlare Communications Inc
@@ -70,15 +71,14 @@ endif
 ifdef VERILOG_SOURCES
 	echo "alog $(ALOG_ARGS) $(VERILOG_SOURCES)" >> $@
 endif
-ifdef SCRIPT_FILE
-	echo "do $(SCRIPT_FILE)" >> $@
-endif
+	$(foreach file,$(POST_COMPILE_SCRIPT_FILES),echo "do $(file)" >> $@ &&) true
 	echo "asim $(ASIM_ARGS) +access +w -interceptcoutput -O2 -dbg $(GPI_ARGS) $(TOPLEVEL)" >> $@
 ifeq ($(WAVES),1)
 	echo "log -recursive *" >> $@
 endif
 ifeq ($(GUI),1)
 	echo "wave -rec *" >> $@
+	$(foreach file,$(PRE_RUN_SCRIPT_FILES),echo "do $(file)" >> $@ &&) true
 else
 	echo "run -all" >> $@
 	echo "endsim" >> $@
