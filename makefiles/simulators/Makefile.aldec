@@ -75,9 +75,9 @@ endif
 	echo "asim $(ASIM_ARGS) +access +w -interceptcoutput -O2 -dbg $(GPI_ARGS) $(TOPLEVEL)" >> $@
 ifeq ($(WAVES),1)
 	echo "log -recursive *" >> $@
+	echo "wave -rec *" >> $@
 endif
 ifeq ($(GUI),1)
-	echo "wave -rec *" >> $@
 	$(foreach file,$(PRE_RUN_SCRIPT_FILES),echo "do $(file)" >> $@ &&) true
 else
 	echo "run -all" >> $@
